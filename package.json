@@ -1,0 +1,33 @@
+{
+  "name": "fitness-tracker",
+  "version": "1.0.0",
+  "description": "Create an app that allows users to add a burger to the menu and then eat it! Be careful the cooks at this restaurant might not meet FDA standards",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "seed": "node seeders/seed.js"
+  },
+  "author": "James Lovejoy",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongoose": "^5.3.16",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jlovejo2/Fitness-Tracker.git"
+  },
+  "keywords": [
+    "fitness",
+    "tracker",
+    "workout"
+  ],
+  "bugs": {
+    "url": "https://github.com/jlovejo2/Fitness-Tracker/issues"
+  },
+  "homepage": "https://github.com/jlovejo2/Fitness-Tracker#readme"
+}
