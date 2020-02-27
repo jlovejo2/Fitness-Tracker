@@ -35,14 +35,16 @@ app.get("/exercise", (req, res) => {
     res.redirect('./exercise.html');
 });
 
+//This code creates an exercise in the api based on delivered data.  Then places that exercise in the schema of the workoutPlan collection field that has its id returned in the url
 app.put("/api/workouts/:id", (req ,res) => {
-    const workoutID = req.params.id;
-    console.log(req.params.id)
+    const workoutID = req.params.id;    
+    //This line of code takes the exercise data that was input from the user on the front end, turns it into a string, and the places it in exercise collection under 'body' field
     db.Exercises.create({ body: JSON.stringify(req.body) } )
+        //This line of code takes the id from the returned exercise that was created.  A search is done for the current workout plan the user is in
+        //Then using _id of newly created exercise.  We push that newly created exercise into the exercise area schema in the workoutPlan collection 
         .then(({ _id }) => db.WorkoutPlan.findByIdAndUpdate(workoutID, { $push: {exercises: _id } }, {new : true}) )
         .then(updatedWorkout => {
-            console.log('updated workout');
-            console.log(updatedWorkout);
+            //send the updated workout back to front end
             res.json(updatedWorkout);
         })
         .catch(({ message }) => {
@@ -51,10 +53,22 @@ app.put("/api/workouts/:id", (req ,res) => {
 });
 
 app.post("/api/workouts", (req,res) => {
-    console.log(req.body);
+    //This code creates a new workout plan
     db.WorkoutPlan.create({})
         .then(dbWorkoutPlan => {
-            console.log(dbWorkoutPlan)
+            //send the newly created workoutPlan back to front end
+            res.json(dbWorkoutPlan);
+        })
+        .catch(({ message }) => {
+            console.log(message);
+        });
+});
+
+app.get("/api/workouts", (req,res) => {
+    //This code finds all workout plans
+    db.WorkoutPlan.find({})
+        .then(dbWorkoutPlan => {
+            //send the newly workoutPlans to front end
             res.json(dbWorkoutPlan);
         })
         .catch(({ message }) => {
