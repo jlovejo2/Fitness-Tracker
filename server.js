@@ -43,8 +43,8 @@ app.put("/api/workouts/:id", (req ,res) => {
         //This line of code takes the id from the returned exercise that was created.  A search is done for the current workout plan the user is in
         //Then using _id of newly created exercise.  We push that newly created exercise into the exercise area schema in the workoutPlan collection 
         .then(({ _id }) => db.WorkoutPlan.findByIdAndUpdate(workoutID, { $push: {exercises: _id } }, {new : true}) )
-        .then(updatedWorkout => {
-            //send the updated workout back to front end
+        .then( () => db.WorkoutPlan.findByIdAndUpdate(workoutID, { $push: {totalDuration: req.body.duration} }, {new: true}))
+        .then(updatedWorkout => {   //send the updated workout back to front end
             res.json(updatedWorkout);
         })
         .catch(({ message }) => {
