@@ -24,15 +24,16 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fitnessTrackerd
 
 // "/"  navigates to the fitness tracker exercise.html
 app.get("/", (req, res) => {
-    res.send('./index.html');
+    res.sendFile(__dirname +'/public/index.html');
 })
 // "/stats" navigates to the dashboard stats.html
+app.get("/stats", (req, res) => {
+    res.sendFile(__dirname +  '/public/stats.html');
+});
 
-//route "/exercise?" continue workout so will need to add in workout identifier  
-
-//route "/exercise"  create new workout
+//route "/exercise"  create new workout or update the last workout used
 app.get("/exercise", (req, res) => {
-    res.redirect('./exercise.html');
+    res.sendFile(__dirname +  '/public/exercise.html');
 });
 
 //This code creates an exercise in the api based on delivered data.  Then places that exercise in the schema of the workoutPlan collection field that has its id returned in the url
@@ -44,7 +45,8 @@ app.put("/api/workouts/:id", (req ,res) => {
         //Then using _id of newly created exercise.  We push that newly created exercise into the exercise area schema in the workoutPlan collection 
         .then(({ _id }) => db.WorkoutPlan.findByIdAndUpdate(workoutID, { $push: {exercises: _id } }, {new : true}) )
         .then( () => db.WorkoutPlan.findByIdAndUpdate(workoutID, { $push: {totalDuration: req.body.duration} }, {new: true}))
-        .then(updatedWorkout => {   //send the updated workout back to front end
+        .then(updatedWorkout => {
+            //send the updated workout back to front end
             res.json(updatedWorkout);
         })
         .catch(({ message }) => {
