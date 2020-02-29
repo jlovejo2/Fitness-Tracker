@@ -1,43 +1,14 @@
-const express = require("express");
-const logger = require("morgan");
-const mongoose = require("mongoose");
+//Imports express npm
+const express = require('express');
 
-const PORT = process.env.PORT || 3001;
+//calls the express.router method
+const router = express.Router();
 
-const db = require("./models");
-
-const app = express();
-
-app.use(logger("dev"));
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-app.use(express.static("public"));
-
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
-mongoose.set('useUnifiedTopology', true);
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fitnessTrackerdb", { useNewUrlParser: true });
-
-
-// "/"  navigates to the fitness tracker exercise.html
-app.get("/", (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
-})
-// "/stats" navigates to the dashboard stats.html
-app.get("/stats", (req, res) => {
-    res.sendFile(__dirname + '/public/stats.html');
-});
-
-//route "/exercise"  create new workout or update the last workout used
-app.get("/exercise", (req, res) => {
-    res.sendFile(__dirname + '/public/exercise.html');
-});
+//imports the burgers model to interact with burgers table in burger database
+const db = require('./models/index.js');
 
 //This code creates an exercise in the api based on delivered data.  Then places that exercise in the schema of the workoutPlan collection field that has its id returned in the url
-app.put("/api/workouts/:id", (req, res) => {
+router.put("/api/workouts/:id", (req, res) => {
     const workoutID = req.params.id;
     //This line of code takes the exercise data that was input from the user on the front end, turns it into a string, and the places it in exercise collection under 'body' field
     db.Exercises.create({ body: JSON.stringify(req.body) })
@@ -54,7 +25,7 @@ app.put("/api/workouts/:id", (req, res) => {
         });
 });
 
-app.post("/api/workouts", (req, res) => {
+router.post("/api/workouts", (req, res) => {
     //This code creates a new workout plan
     db.WorkoutPlan.create({})
         .then(dbWorkoutPlan => {
@@ -66,37 +37,19 @@ app.post("/api/workouts", (req, res) => {
         });
 });
 
-app.get("/api/workouts", (req, res) => {
+router.get("/api/workouts", (req, res) => {
     //This code finds all workout plans
-    db.WorkoutPlan.find({}).populate({path: 'exercises'})
+    db.WorkoutPlan.find({})
         .then(dbWorkoutPlan => {
-            let dataToBeSentArr = [];
-
-            for (let workout of dbWorkoutPlan) {
-                let objReformat = {};
-                let exerciseArr = [];
-                objReformat.day = workout.day;
-                objReformat.duration = workout.totalDuration.reduce(function (timeA, timeB) {
-                    return timeA + timeB;
-                }, 0);;
-
-                workout.exercises.forEach(exercise => {
-                    exerciseArr.push(JSON.parse(exercise.body))
-
-                })
-                objReformat.exercises = exerciseArr
-                dataToBeSentArr.push(objReformat);
-            }
-            
-            console.log(dataToBeSentArr);
-            res.json(dataToBeSentArr);
+            //send the newly workoutPlans to front end
+            res.json(dbWorkoutPlan);
         })
         .catch(({ message }) => {
             console.log(message);
         });
 });
 
-app.get("/api/workouts/range", (req, res) => {
+router.get("/api/workouts/range", (req, res) => {
     db.WorkoutPlan.find({}).populate({ path: 'exercises', options: { limit: 7, sort: { day: -1 } } })
         .then(workoutData => {
             // console.log(JSON.parse(exerciseData[0].exercises[0].body));
@@ -121,10 +74,4 @@ app.get("/api/workouts/range", (req, res) => {
             console.log(dataToBeSentArr);
             res.json(dataToBeSentArr);
         });
-});
-
-
-// Start the server
-app.listen(PORT, () => {
-    console.log(`App running on port ${PORT}!`);
 });
