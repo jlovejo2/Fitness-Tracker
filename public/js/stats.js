@@ -207,9 +207,8 @@ function calculateTotalWeight(data) {
       total.push(exercise.weight);
     });
   });
-
+  console.log(total);
   return total;
-}
 
 function workoutNames(data) {
   let workouts = [];

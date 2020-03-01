@@ -99,4 +99,5 @@ See the layout of the app below.
 
 
 ## Known Issues With Code
-* 
+*  If you have more than one workoutPlan in a day then the api/workout/range is only grabbing the last 7 workouts.
+*  Believe the front end code for the charts is not designed correctly.  The bar charts and line charts want to be delivered daily totals of duration and weight for all the exercises in that daily workout plan.  The pie and donut charts are designed to be delivered all the exercise names for all workouts in a day.  So these names won't line-up with the daily totals and therefore they aren't in sync.
