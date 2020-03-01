@@ -209,6 +209,7 @@ function calculateTotalWeight(data) {
   });
   console.log(total);
   return total;
+}
 
 function workoutNames(data) {
   let workouts = [];
