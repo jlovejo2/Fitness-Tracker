@@ -1,5 +1,3 @@
-//This calls the function I wrote that will sum all the elements of an array and skip the nulls
-const total = require('./functions');
 
 module.exports = {
 
