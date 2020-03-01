@@ -74,6 +74,7 @@ See the layout of the app below.
 ## Structure of Code and Functions
 * controllers - is the folder that contains the code with main body of api routes that deal with the models
     - controller.js - this file contains all the api routes.  It was created because some manipulation of the database data into a format that better serves the front-end was done
+    - controllers-functions.js - this file contains one function that I acutally used for reformatting and several others that I tried to use in development but didnt find a use for them
 * models - is the folder that contains the code files for the mongoose schema
     - exercises.js - this file contains the code for the exercises schema
     - index.js - this file combines our models and exports them

@@ -34,8 +34,7 @@ mongoose.connect(
     process.env.MONGODB_URI || 
     "mongodb://jlovejo2:Frisbee2010@ds259528.mlab.com:59528/heroku_wffjjmzd",
          {
-            useNewUrlParser: true,
-            useMongoClient: true
+            useNewUrlParser: true
          }
          );
 

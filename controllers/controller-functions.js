@@ -1,5 +1,5 @@
 //This calls the function I wrote that will sum all the elements of an array and skip the nulls
-const sum = require('./functions');
+const total = require('./functions');
 
 module.exports = {
 
@@ -9,10 +9,14 @@ module.exports = {
         let dataToBeSentArr = [];
 
         for (let workout of workoutData) {
+            console.log(workout);
             let objReformat = {};
+            objReformat._id = workout.id;
             objReformat.day = workout.day;
-            objReformat.duration = sum(workout.totalDuration)
-            objReformat.weight = sum(workout.totalWeight)
+            objReformat.duration = workout.totalDuration.reduce(function (timeA, timeB) {
+                return timeA + timeB;
+            }, 0);
+            console.log(objReformat.duration);
             objReformat.exercises = workout.exercises
             dataToBeSentArr.push(objReformat)
         };
