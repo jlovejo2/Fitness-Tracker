@@ -5,7 +5,7 @@ the link to github is shown below:
 https://github.com/jlovejo2/Fitness-Tracker.git
 
 the link to the functional app is shown below:
-https://mysterious-earth-27022.herokuapp.com/
+https://afternoon-tundra-24604.herokuapp.com/
 
 ## Table of Contents
 * [User Story](#user-story)
